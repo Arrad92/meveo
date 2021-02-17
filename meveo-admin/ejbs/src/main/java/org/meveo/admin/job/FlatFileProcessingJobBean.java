@@ -217,7 +217,7 @@ public class FlatFileProcessingJobBean {
                 }
                 if (cpLines == 0) {
                     String stateFile = "empty";
-                    if (FlatFileProcessingJob.ROLLBBACK.equals(errorAction)) {
+                    if (FlatFileProcessingJob.ROLLBACK.equals(errorAction)) {
                         stateFile = "rollbacked";
                     }
                     report += "\r\n file " + fileName + " is " + stateFile;

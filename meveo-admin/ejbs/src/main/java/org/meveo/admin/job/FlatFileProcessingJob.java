@@ -65,6 +65,8 @@ public class FlatFileProcessingJob extends Job {
 
     private static final String FLAT_FILE_PROCESSING_JOB_RECORD_VARIABLE_NAME = "FlatFileProcessingJob_recordVariableName";
 
+    private static final String FLAT_FILE_PROCESSING_THREAD_POOL_SIZE = "FlatFileProcessingJob_threadPoolSize";
+
     /** The flat file processing job bean. */
     @Inject
     private FlatFileProcessingJobBean flatFileProcessingJobBean;
@@ -79,8 +81,8 @@ public class FlatFileProcessingJob extends Job {
     /** The Constant STOP. */
     public static final String STOP = "STOP";
     
-    /** The Constant ROLLBBACK. */
-    public static final String ROLLBBACK = "ROLLBBACK";
+    /** The Constant ROLLBACK. */
+    public static final String ROLLBACK = "ROLLBACK";
 
     @SuppressWarnings("unchecked")
     @Override
@@ -153,7 +155,7 @@ public class FlatFileProcessingJob extends Job {
                 if (!jobExecutionService.isJobRunningOnThis(result.getJobInstance().getId())) {
                     break;
                 }
-                if (FlatFileProcessingJob.ROLLBBACK.equals(errorAction)) {
+                if (FlatFileProcessingJob.ROLLBACK.equals(errorAction)) {
                 	flatFileProcessingJobBean.executeWithRollBack(result, inputDir, outputDir, archiveDir, rejectDir, file, mappingConf, scriptInstanceFlowCode, recordVariableName, initContext, originFilename, formatTransfo,errorAction);
                 } else {
                 	flatFileProcessingJobBean.executeWithoutRollBack(result, inputDir, outputDir, archiveDir, rejectDir, file, mappingConf, scriptInstanceFlowCode, recordVariableName, initContext, originFilename, formatTransfo,errorAction);                	
@@ -321,9 +323,19 @@ public class FlatFileProcessingJob extends Job {
         Map<String, String> listValuesErrorAction = new HashMap<String, String>();
         listValuesErrorAction.put(FlatFileProcessingJob.CONTINUE, "Continue");
         listValuesErrorAction.put(FlatFileProcessingJob.STOP, "Stop");
-        listValuesErrorAction.put(FlatFileProcessingJob.ROLLBBACK, "Rollback");
+        listValuesErrorAction.put(FlatFileProcessingJob.ROLLBACK, "Rollback");
         errorAction.setListValues(listValuesErrorAction);
         result.put(FLAT_FILE_PROCESSING_JOB_ERROR_ACTION, errorAction);
+
+        CustomFieldTemplate threadPoolSize = new CustomFieldTemplate();
+        threadPoolSize.setCode(FLAT_FILE_PROCESSING_THREAD_POOL_SIZE);
+        threadPoolSize.setAppliesTo(JOB_FLAT_FILE_PROCESSING_JOB);
+        threadPoolSize.setActive(true);
+        threadPoolSize.setDescription(resourceMessages.getString("flatFile.threadPoolSize"));
+        threadPoolSize.setFieldType(CustomFieldTypeEnum.LONG);
+        threadPoolSize.setDefaultValue("1");
+        threadPoolSize.setValueRequired(false);
+        result.put(FLAT_FILE_PROCESSING_THREAD_POOL_SIZE, threadPoolSize);
 
         return result;
     }

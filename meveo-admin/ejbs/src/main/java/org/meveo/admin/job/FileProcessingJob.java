@@ -235,7 +235,7 @@ public class FileProcessingJob extends Job {
         Map<String, String> listValuesErrorAction = new HashMap<String, String>();
         listValuesErrorAction.put(FlatFileProcessingJob.CONTINUE, "Continue");
         listValuesErrorAction.put(FlatFileProcessingJob.STOP, "Stop");
-        listValuesErrorAction.put(FlatFileProcessingJob.ROLLBBACK, "Rollback");
+        listValuesErrorAction.put(FlatFileProcessingJob.ROLLBACK, "Rollback");
         errorAction.setListValues(listValuesErrorAction);
         result.put(FILE_PROCESSING_JOB_ERROR_ACTION, errorAction);
 

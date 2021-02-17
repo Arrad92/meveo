@@ -106,7 +106,7 @@ public class FlatFileProcessingAsync {
 				Map<String, Object> executeParams = new HashMap<String, Object>();
 				executeParams.put(recordVariableName, recordContextFinal.getRecord());
 				executeParams.put(originFilename, fileName);
-				if (FlatFileProcessingJob.ROLLBBACK.equals(errorAction)) {
+				if (FlatFileProcessingJob.ROLLBACK.equals(errorAction)) {
 					executeParams.put(Script.CONTEXT_CURRENT_USER, currentUser);
 					executeParams.put(Script.CONTEXT_APP_PROVIDER, appProvider);
 					script.execute(executeParams);
@@ -126,7 +126,7 @@ public class FlatFileProcessingAsync {
 								unitFlatFileProcessingJobBean.execute(script, executeParams);
 								flatFileAsyncResponse.setSuccess(true);
 							} catch (Throwable e) {
-								if (FlatFileProcessingJob.ROLLBBACK.equals(errorAction)) {
+								if (FlatFileProcessingJob.ROLLBACK.equals(errorAction)) {
 									rollBackException.set(new BusinessException(e.getMessage(), e));
 									doStop.set(true);
 								}
@@ -143,7 +143,7 @@ public class FlatFileProcessingAsync {
 				}
 
 			} catch (Throwable e) {
-				if (FlatFileProcessingJob.ROLLBBACK.equals(errorAction)) {
+				if (FlatFileProcessingJob.ROLLBACK.equals(errorAction)) {
 					throw new BusinessException(e.getMessage(), e);
 				}
 				String erreur = (recordContext == null || recordContext.getReason() == null) ? e.getMessage() : recordContext.getReason();
